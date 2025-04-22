@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:spotify/common/helpers/is_dark_mode.dart';
 import 'package:spotify/common/widgets/appbar/app_bar.dart';
 import 'package:spotify/common/widgets/button/basic_app_button.dart';
 import 'package:spotify/core/config/assets/app_vectors.dart';
-import 'package:spotify/presentation/auth/pages/signin.dart';
+import 'package:spotify/presentation/auth/pages/signup.dart';
 
-class SignUp extends StatelessWidget {
-  const SignUp({super.key});
+class SigninPage extends StatelessWidget {
+  const SigninPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +34,9 @@ class SignUp extends StatelessWidget {
               _fullNameFeild(context),
               SizedBox(height: 20,),
               _emailFeild(context),
-              SizedBox(height: 20,),
-              _passwordFeild(context),
-               SizedBox(height: 20,),
+                SizedBox(height: 20,),
                BasicAppButton(Onpressed: (){}, 
-               buttonText: 'Create Account'),
+               buttonText: 'Signin'),
               
             ],
           ),
@@ -48,7 +46,7 @@ class SignUp extends StatelessWidget {
   }
   Widget _registerText(BuildContext context){
     return Text(
-      'Register',
+      'Signin',
       style: TextStyle(
         color: context.isDarkMode ? Colors.white : Colors.black,
         fontWeight: FontWeight.bold,
@@ -78,15 +76,7 @@ Widget _emailFeild(BuildContext context){
   );
 }
 
-Widget _passwordFeild(BuildContext context){
-  return TextField(
-    decoration: InputDecoration(
-      hintText: 'Enter Email'
-    ).applyDefaults(
-      Theme.of(context).inputDecorationTheme
-    ),
-  );
-}
+
 
 Widget _signinText(BuildContext context){
   return Padding(
@@ -96,19 +86,19 @@ Widget _signinText(BuildContext context){
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-           Text('Dont have an account?',
+           Text('Not a member?',
            style: TextStyle(
             color: context.isDarkMode ? Colors.white : Colors.black,
             fontSize: 14,
            ),),
            TextButton(onPressed: (){
             Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context)=>SigninPage()));
+            MaterialPageRoute(builder: (context)=> SignUp()));
            }, 
-           child: Text('Signin',
+           child: Text('Register Now',
            style: TextStyle(color: Colors.blue),))
       ],
     ),
   );
-}
+  }
 }
