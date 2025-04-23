@@ -4,10 +4,17 @@ import 'package:spotify/common/helpers/is_dark_mode.dart';
 import 'package:spotify/common/widgets/appbar/app_bar.dart';
 import 'package:spotify/common/widgets/button/basic_app_button.dart';
 import 'package:spotify/core/config/assets/app_vectors.dart';
+import 'package:spotify/data/models/auth/create_user_req.dart';
+import 'package:spotify/domain/usecases/auth/signup.dart';
 import 'package:spotify/presentation/auth/pages/signin.dart';
+import 'package:spotify/presentation/root/pages/rootpage.dart';
+import 'package:spotify/service_locator.dart';
 
 class SignUp extends StatelessWidget {
-  const SignUp({super.key});
+   SignUp({super.key});
+  final TextEditingController _fullname = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +44,26 @@ class SignUp extends StatelessWidget {
               SizedBox(height: 20,),
               _passwordFeild(context),
                SizedBox(height: 20,),
-               BasicAppButton(Onpressed: (){}, 
+               BasicAppButton(Onpressed: () async{
+                var result = await sl<SignupUseCase>().call(
+                params: CreateUserReq(
+                  fullName: _fullname.text.toString(), 
+                  email: _email.text.toString(), 
+                  password: _password.text.toString())
+                );
+                result.fold(
+                  (l){
+                    var snackbar = SnackBar(content: Text(l));
+                    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                  }, 
+                  (r){
+                    Navigator.pushAndRemoveUntil(context, 
+                    MaterialPageRoute(builder:(context)=>Rootpage()), 
+                    (root)=>false
+                    );
+
+                  });
+               }, 
                buttonText: 'Create Account'),
               
             ],
@@ -60,6 +86,7 @@ class SignUp extends StatelessWidget {
 
 Widget _fullNameFeild(BuildContext context){
   return TextField(
+    controller: _fullname,
     decoration: InputDecoration(
       hintText: 'Full Name'
     ).applyDefaults(
@@ -70,6 +97,7 @@ Widget _fullNameFeild(BuildContext context){
 
 Widget _emailFeild(BuildContext context){
   return TextField(
+    controller: _email,
     decoration: InputDecoration(
       hintText: 'Enter Email'
     ).applyDefaults(
@@ -80,6 +108,7 @@ Widget _emailFeild(BuildContext context){
 
 Widget _passwordFeild(BuildContext context){
   return TextField(
+    controller: _password,
     decoration: InputDecoration(
       hintText: 'Enter Email'
     ).applyDefaults(
